@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
 @Service
 public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
@@ -58,6 +60,17 @@ public class UsuarioService {
 		public Usuario getByEmail(String email) {
 			return usuarioRepository.findByEmail(email);
 		}
+		
+		// Metodo para actualizar informacion de usuarios permitiendo modificar el password
+		public Usuario updateUsuario(Usuario usuario, Long id) {
+			return usuarioRepository.findById(id)
+					.map(userMap -> {
+						userMap.setContraseña(usuario.getContraseña());
+						return usuarioRepository.save(userMap);
+					})
+					.orElseThrow(()-> new UsuarioNotFoundException(id));
+		}
+			
 		
 		
 		

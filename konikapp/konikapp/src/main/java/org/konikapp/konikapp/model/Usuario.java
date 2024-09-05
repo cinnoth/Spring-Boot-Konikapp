@@ -1,12 +1,15 @@
 package org.konikapp.konikapp.model;
 
+import java.util.List;
 import java.util.Objects;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,10 +22,10 @@ public class Usuario {
 	@Column(name = "id_usuario")
 	private Long id;
 	
-	@Column(name = "nombre", length = 60, nullable = false, unique=true)
+	@Column(name = "nombre", length = 60, nullable = false, unique=false)
 	private String nombre;
 	
-	@Column(name = "apellido", length = 60, nullable = false, unique=true)
+	@Column(name = "apellido", length = 60, nullable = false, unique=false)
 	private String apellido;
 	
 	@Column(name = "email", length = 120, nullable = false, unique=true)
@@ -33,6 +36,9 @@ public class Usuario {
 	
 	@Column(name = "telefono", length =10, nullable = false, unique = false)
 	private String telefono;
+	
+	@Column(name = "fechaNacimiento", length =10, nullable = false, unique = false)
+	private String fechaNacimiento;
 
 	@Column (name = "cp", length = 5, nullable = false, unique = false)
 	private String cp;
@@ -46,6 +52,15 @@ public class Usuario {
 	@Column(name = "direccion", length = 120, nullable = false, unique=false)
 	private String direccion;
 	
+	
+	//Definir las relaciones (1:N) OneToMany. Un usuario puede tener varias publicaciones
+	/*@OneToMany(mappedBy= "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	
+	private List <Publicacion> publicaciones;*/
+	
+	
+	
 	// Constructor vacio 
 	
 	public Usuario() {
@@ -54,8 +69,9 @@ public class Usuario {
 
 	// Constructor 
 
-	public Usuario(Long id, String nombre, String apellido, String email, String contraseña, String telefono, String cp,
-			String estado, String ciudad, String direccion) {
+	public Usuario(Long id, String nombre, String apellido, String email, String contraseña, String telefono,
+			String fechaNacimiento, String cp, String estado, String ciudad, String direccion,
+			List<Publicacion> publicaciones) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -63,6 +79,7 @@ public class Usuario {
 		this.email = email;
 		this.contraseña = contraseña;
 		this.telefono = telefono;
+		this.fechaNacimiento = fechaNacimiento;
 		this.cp = cp;
 		this.estado = estado;
 		this.ciudad = ciudad;
@@ -75,6 +92,7 @@ public class Usuario {
 	public Long getId() {
 		return id;
 	}
+
 
 	public void setId(Long id) {
 		this.id = id;
@@ -152,28 +170,33 @@ public class Usuario {
 		this.direccion = direccion;
 	}
 
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	
 	
 	//toString
-	
 	
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email
-				+ ", contraseña=" + contraseña + ", telefono=" + telefono + ", cp=" + cp + ", estado=" + estado
-				+ ", ciudad=" + ciudad + ", direccion=" + direccion + "]";
+				+ ", contraseña=" + contraseña + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento
+				+ ", cp=" + cp + ", estado=" + estado + ", ciudad=" + ciudad + ", direccion=" + direccion + "]";
 	}
-	
-	
-	
+
 	//hashCode 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(apellido, ciudad, contraseña, cp, direccion, email, estado, id, nombre, telefono);
+		return Objects.hash(apellido, ciudad, contraseña, cp, direccion, email, estado, fechaNacimiento, id, nombre,
+				telefono);
 	}
-	
-	
-	// Equals
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -184,12 +207,16 @@ public class Usuario {
 			return false;
 		Usuario other = (Usuario) obj;
 		return Objects.equals(apellido, other.apellido) && Objects.equals(ciudad, other.ciudad)
-				&& Objects.equals(contraseña, other.contraseña) && cp == other.cp
+				&& Objects.equals(contraseña, other.contraseña) && Objects.equals(cp, other.cp)
 				&& Objects.equals(direccion, other.direccion) && Objects.equals(email, other.email)
-				&& Objects.equals(estado, other.estado) && Objects.equals(id, other.id)
-				&& Objects.equals(nombre, other.nombre) && telefono == other.telefono;
+				&& Objects.equals(estado, other.estado) && Objects.equals(fechaNacimiento, other.fechaNacimiento)
+				&& Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre)
+				&& Objects.equals(telefono, other.telefono);
 	}
+
+
 	
+
 
 	
 	

@@ -8,18 +8,23 @@ import org.konikapp.konikapp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @RequestMapping("/api/kapp") //valor del endpoint
+//CORS
+@CrossOrigin(origins ="*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class UsuarioController {
 	// Llamar al service
 	private UsuarioService usuarioService;
@@ -72,8 +77,13 @@ public class UsuarioController {
 	    }
 		
 		
+	 // Mapear método updateUser utilizando PUT. Necesitamos acceder al user mediante id (findById) y definir el nuevo valor.
+	    @PutMapping("konikappers/{id}")
+	    public Usuario updateUsuario(@RequestBody Usuario usuario, @PathVariable(name="id") Long id) {
+	        return usuarioService.updateUsuario(usuario, id);
+	    }
 		
-		
+	    
 		
 		
 		
